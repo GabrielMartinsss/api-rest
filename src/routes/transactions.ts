@@ -5,6 +5,13 @@ import { z } from 'zod'
 import { checkSessionIdExists } from '../middlewares/check-session-id-exists'
 
 export async function transactionsRoutes(server: FastifyInstance) {
+  // If i want make a global middleware;
+  // It's global to only this endpoint
+  // eslint-disable-next-line
+  server.addHook('preHandler', async (req, res) => {
+    console.log(`[${req.method}] ${req.url}`)
+  })
+
   server.get('/', { preHandler: [checkSessionIdExists] }, async (req) => {
     const { sessionId } = req.cookies
 
